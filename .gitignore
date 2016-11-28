@@ -1,0 +1,8 @@
+/node_modules
+/dist
+/disttest
+yarn.lock
+.DS_Store
+npm-debug.log
+.#*
+.tmp
