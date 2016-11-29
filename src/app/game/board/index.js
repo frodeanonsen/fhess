@@ -1,7 +1,13 @@
 import { King, Queen, Rook, Bishop, Knight, Pawn, Colors } from '../pieces'
 import Square from './square'
 
+const colPositions = { a: 0, b: 1, c: 2, d: 3, e: 4, f: 5, g: 6, h: 7 }
+
 export default class Board {
+
+  static letterPosToCol(letter) {
+    return colPositions[letter.toLowerCase()]
+  }
 
   constructor() {
     this.rows = 8
@@ -36,7 +42,7 @@ export default class Board {
     this.squares[col][7].setPiece(new Rook(color))
   }
 
-  setupPawns(col, color) {
+  setupPawnRow(col, color) {
     for (let row = 0; row < this.rows; row += 1) {
       this.squares[col][row].setPiece(new Pawn(color))
     }
@@ -45,11 +51,16 @@ export default class Board {
   initialize() {
     this.setupFirstRowPieces(0, Colors.BLACK)
     this.setupFirstRowPieces(7, Colors.WHITE)
-    this.setupPawns(1, Colors.BLACK)
-    this.setupPawns(6, Colors.WHITE)
+    this.setupPawnRow(1, Colors.BLACK)
+    this.setupPawnRow(6, Colors.WHITE)
   }
 
-  getSquare(col, row) {
-    return this.squares[col][row]
+  getSquareA(pos) {
+    const [letterPos, numberPos] = pos.split('')
+    const row = this.rows - numberPos
+    const col = Board.letterPosToCol(letterPos)
+    return this.squares[row][col]
   }
+
+  getSquareByRowCol(row, col) { return this.squares[row][col] }
 }
