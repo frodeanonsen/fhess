@@ -28,6 +28,7 @@ export default class Board {
         color = color === Colors.BLACK ? Colors.WHITE : Colors.BLACK
       }
       this.squares.push(row)
+      color = color === Colors.BLACK ? Colors.WHITE : Colors.BLACK
     }
   }
 

@@ -73,7 +73,8 @@ const devWebpackConfig = merge.smart(commonWebpackSettings.baseWebpackConfig, {
   ],
 
   // Generate sourcemaps using a faster method
-  devtool : '#cheap-module-inline-source-map'
+  debug: true,
+  devtool: 'inline-source-map'
 });
 
 

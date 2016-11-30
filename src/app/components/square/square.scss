@@ -1,0 +1,16 @@
+.square {
+  width: 100px;
+  height: 100px;
+
+  &.white {
+    background-color: #eee;
+  }
+
+  &.black {
+    background-color: #666;
+  }
+}
+
+.row {
+  float: left;
+}

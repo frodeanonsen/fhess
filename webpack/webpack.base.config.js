@@ -35,7 +35,7 @@ const baseBabelLoader = {
 
 const baseImageLoaders = [
   // Look for images, and turn them into embedded base64 strings if they're small enough
-  { test: /\.svg(\?.*)?$/,   loader: 'url?prefix=fonts/&name=[path][name].[ext]&limit=10000&mimetype=image/svg+xml' },
+  { test: /\.svg(\?.*)?$/,   loader: 'svg-url?noquotes' },
   { test: /\.(png|jpg)$/,    loader: 'url?limit=8192' },
 ];
 
