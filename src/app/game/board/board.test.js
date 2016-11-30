@@ -1,4 +1,7 @@
-/* eslint-env jest */
+/* eslint-env jest
+ * flow
+*/
+
 import Board from './index'
 import { King, Queen, Rook, Bishop, Knight, Pawn, Colors } from '../pieces'
 

@@ -1,5 +1,9 @@
+// @flow
+
 export default class Piece {
-  constructor(color) {
+  color:number
+
+  constructor(color:number) {
     this.color = color
   }
 

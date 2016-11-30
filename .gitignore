@@ -1,6 +1,7 @@
 /node_modules
 /dist
 /disttest
+/flow-typed
 yarn.lock
 .DS_Store
 npm-debug.log

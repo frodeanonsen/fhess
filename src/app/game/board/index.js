@@ -1,3 +1,5 @@
+// @flow
+
 import { King, Queen, Rook, Bishop, Knight, Pawn, Colors } from '../pieces'
 import Square from './square'
 
@@ -9,29 +11,27 @@ export default class Board {
     return colPositions[letter.toLowerCase()]
   }
 
+  rows: number
+  cols: number
+  squares: Square[][]
+
   constructor() {
     this.rows = 8
     this.cols = 8
-    this.squares = [[null, null, null, null, null, null, null, null],
-                    [null, null, null, null, null, null, null, null],
-                    [null, null, null, null, null, null, null, null],
-                    [null, null, null, null, null, null, null, null],
-                    [null, null, null, null, null, null, null, null],
-                    [null, null, null, null, null, null, null, null],
-                    [null, null, null, null, null, null, null, null],
-                    [null, null, null, null, null, null, null, null]]
-
+    this.squares = []
     let color = Colors.WHITE
 
     for (let r = 0; r < this.rows; r += 1) {
+      const row:Square[] = []
       for (let c = 0; c < this.cols; c += 1) {
-        this.squares[r][c] = new Square(r, c, color)
+        row.push(new Square(r, c, color))
         color = color === Colors.BLACK ? Colors.WHITE : Colors.BLACK
       }
+      this.squares.push(row)
     }
   }
 
-  setupFirstRowPieces(col, color) {
+  setupFirstRowPieces(col: number, color:number) {
     this.squares[col][0].setPiece(new Rook(color))
     this.squares[col][1].setPiece(new Knight(color))
     this.squares[col][2].setPiece(new Bishop(color))
@@ -42,7 +42,7 @@ export default class Board {
     this.squares[col][7].setPiece(new Rook(color))
   }
 
-  setupPawnRow(col, color) {
+  setupPawnRow(col: number, color:number) {
     for (let row = 0; row < this.rows; row += 1) {
       this.squares[col][row].setPiece(new Pawn(color))
     }
@@ -55,12 +55,12 @@ export default class Board {
     this.setupPawnRow(6, Colors.WHITE)
   }
 
-  getSquareA(pos) {
-    const [letterPos, numberPos] = pos.split('')
-    const row = this.rows - numberPos
+  getSquareA(pos:string) {
+    const [letterPos:string, numberPos:number] = pos.split('')
+    const row = this.rows - parseInt(numberPos)
     const col = Board.letterPosToCol(letterPos)
     return this.squares[row][col]
   }
 
-  getSquareByRowCol(row, col) { return this.squares[row][col] }
+  getSquareByRowCol(row:number, col:number) { return this.squares[row][col] }
 }

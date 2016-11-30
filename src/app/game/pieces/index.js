@@ -1,3 +1,5 @@
+// @flow
+
 import k from './king'
 import q from './queen'
 import r from './rook'

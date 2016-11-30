@@ -1,4 +1,7 @@
-/* eslint-env jest */
+/* eslint-env jest
+ * flow
+ */
+
 import Square from './square'
 import { Colors } from '../pieces'
 

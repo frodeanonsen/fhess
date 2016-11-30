@@ -1,4 +1,7 @@
-/* eslint-env jest */
+/* eslint-env jest
+ * @flow
+ */
+
 import { Colors, Pawn } from './index'
 
 describe('the Pawn piece', () => {
