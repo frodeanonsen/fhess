@@ -7,8 +7,7 @@
   "author": "Frode Ånonsen <frode@anonsen.org>",
   "scripts": {
     "clean": "rm -rf dist",
-    "test": "jest disttest/appTestBundle.js",
-    "test:build": "webpack --config webpack/webpack.test.config.js --progress --colors --target node",
+    "test": "NODE_ENV=test jest --verbose",
     "test:watch": "NODE_ENV=test jest --watch --verbose",
     "build": "webpack --config webpack/webpack.prod.config.js --progress --colors",
     "build:watch": "webpack-dev-server --config webpack/webpack.dev.config.js --progress --colors"
