@@ -1,5 +1,5 @@
 /* eslint-env jest
- * flow
+ * @flow
 */
 
 import Board from './index'
