@@ -18,7 +18,7 @@ const NODE_ENV = configValues.env;
 
 
 const baseBabelLoader = {
-  // Load all files with a .jsx or .jsx extension
+  // Load all files with a .js or .jsx extension
   test: /\.jsx?/,
   // that's inside our "src" folder
   include: [PATHS.src, path.join(PATHS.base, "test")],

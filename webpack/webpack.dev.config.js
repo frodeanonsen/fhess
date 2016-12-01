@@ -11,6 +11,9 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const PATHS = configValues.PATHS;
 const ENVIRONMENT = configValues.ENVIRONMENT;
 
+const devBabelLoader = commonWebpackSettings.baseBabelLoader
+devBabelLoader.loaders = ['react-hot', 'babel']
+
 const devWebpackConfig = merge.smart(commonWebpackSettings.baseWebpackConfig, {
   entry : {
     app : [
@@ -29,7 +32,7 @@ const devWebpackConfig = merge.smart(commonWebpackSettings.baseWebpackConfig, {
 
   module : {
     loaders: [
-      commonWebpackSettings.baseBabelLoader,
+      devBabelLoader,
       commonWebpackSettings.baseImageLoaders,
       commonWebpackSettings.baseTemplateLoaders,
       commonWebpackSettings.baseStyleLoaders
@@ -72,9 +75,8 @@ const devWebpackConfig = merge.smart(commonWebpackSettings.baseWebpackConfig, {
     commonWebpackSettings.htmlPlugin
   ],
 
-  // Generate sourcemaps using a faster method
-  debug: true,
-  devtool: 'inline-source-map'
+  // Generate sourcemaps
+  devtool: '#inline-source-map'
 });
 
 

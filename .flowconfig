@@ -3,6 +3,7 @@
 [include]
 
 [libs]
+decls
 
 [options]
 module.name_mapper='^\(.*\)\.scss$' -> '<PROJECT_ROOT>/flow/SCSSModule.js.flow'
