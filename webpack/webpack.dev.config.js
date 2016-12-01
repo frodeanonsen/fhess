@@ -11,9 +11,6 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const PATHS = configValues.PATHS;
 const ENVIRONMENT = configValues.ENVIRONMENT;
 
-const devBabelLoader = commonWebpackSettings.baseBabelLoader
-devBabelLoader.loaders = ['react-hot', 'babel']
-
 const devWebpackConfig = merge.smart(commonWebpackSettings.baseWebpackConfig, {
   entry : {
     app : [
@@ -32,7 +29,7 @@ const devWebpackConfig = merge.smart(commonWebpackSettings.baseWebpackConfig, {
 
   module : {
     loaders: [
-      devBabelLoader,
+      commonWebpackSettings.baseBabelLoader,
       commonWebpackSettings.baseImageLoaders,
       commonWebpackSettings.baseTemplateLoaders,
       commonWebpackSettings.baseStyleLoaders

@@ -26,7 +26,7 @@ const baseBabelLoader = {
   exclude: [/node_modules/],
   // run it through Babel, and cache results in the OS temp folder.
   // Note that Babel itself is configured using a ".babelrc" file
-  loader: 'babel',
+  loader: 'babel-loader',
   query : {
     cacheDirectory : true,
     presets: ['es2015', 'stage-2']
@@ -35,21 +35,21 @@ const baseBabelLoader = {
 
 const baseImageLoaders = [
   // Look for images, and turn them into embedded base64 strings if they're small enough
-  { test: /\.svg(\?.*)?$/,   loader: 'svg-url?noquotes' },
-  { test: /\.(png|jpg)$/,    loader: 'url?limit=8192' },
+  { test: /\.svg(\?.*)?$/,   loader: 'svg-url-loader?noquotes' },
+  { test: /\.(png|jpg)$/,    loader: 'url-loader?limit=8192' },
 ];
 
 const baseTemplateLoaders = [
   {
     test: /\.hbs$/,
-    loader: 'handlebars'
+    loader: 'handlebars-loader'
   }
 ];
 
 const baseStyleLoaders = [
   {
     test: /\.scss$/,
-    loaders: [ 'style', 'css', 'sass' ]
+    loaders: [ 'style-loader', 'css-loader?sourceMap', 'sass-loader?sourceMap' ]
   }
 ];
 
