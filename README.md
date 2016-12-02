@@ -8,14 +8,17 @@ Frodes Chess, an adventure in Javascript
 ### Flow
 We use the Flow library static type checking
 https://flowtype.org/docs/getting-started.html
+
 run `npm run setup:flow`
 
-Build
+### Build
 `npm run build`
+
 or with watch: `npm run build:watch`
 
-Test
+### Test
 `npm run test`
+
 or with watch: `npm run test:watch`
 
 ## Contributions
