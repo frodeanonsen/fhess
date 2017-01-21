@@ -33,8 +33,8 @@ export default class BoardComponent extends React.Component {
     })
     
     
-    const piecesComps = game.position.map( p => {
-      return <PieceComponent piece={p}/>
+    const piecesComps = game.position.map( (p, key) => {
+      return <PieceComponent key={key} piece={p}/>
     })
     
     return (
