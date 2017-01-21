@@ -5,6 +5,7 @@ import Board from '../game/board'
 import Square from '../game/board/square'
 import Game from '../game'
 import SquareComponent from './square'
+import PieceComponent from './piece'
 
 export default class BoardComponent extends React.Component {
   render() {
@@ -20,7 +21,7 @@ export default class BoardComponent extends React.Component {
       }
       s.push(col)
     }
-
+    
     const rows = s.map(row => {
       return (
         <div className='row'>
@@ -30,13 +31,21 @@ export default class BoardComponent extends React.Component {
          </div>
       )
     })
-
+    
+    
+    const piecesComps = game.position.map( p => {
+      return <PieceComponent piece={p}/>
+    })
+    
     return (
       <div>
         <div>Player 1: {player1.name}</div>
         <div>Player 2: {player2.name}</div>
         <div>
           {rows}
+        </div>
+        <div>
+          {piecesComps}
         </div>
       </div>
     )

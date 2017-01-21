@@ -2,6 +2,7 @@
 
 import Player from './player'
 import Board from './board'
+import { StartingPosition } from './pieces'
 
 export default class Game {
   player1: Player
@@ -10,6 +11,7 @@ export default class Game {
 
   initialize() {
     this.board.initialize()
+    this.position = StartingPosition
   }
 
   constructor(player1:Player, player2:Player) {

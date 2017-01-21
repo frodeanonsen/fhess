@@ -19,32 +19,16 @@ import styles from './piece.scss'
 
 export default class PieceComponent extends Component {
   render() {
-    const piece:Piece = this.props.piece
-    let imageUrl = pawnLightUrl
-
-    if (piece.pieceType == 'queen') {
-      imageUrl = piece.getColor() == Colors.BLACK ? queenDarkUrl : queenLightUrl
+    const piece = this.props.piece
+    const color = piece.color == 1 ? 'black' : 'white'
+    const classList = `piece ${color}`
+    const text = piece.notation
+    const x = piece.col * 100 + 5;
+    const y = piece.row * 100 + 5;
+    const style = {
+      transform: `translate(${x}px, ${y}px)`
     }
-
-    if (piece.pieceType == 'king') {
-      imageUrl = piece.getColor() == Colors.BLACK ? kingDarkUrl : kingLightUrl
-    }
-
-    if (piece.pieceType == 'rook') {
-      imageUrl = piece.getColor() == Colors.BLACK ? rookDarkUrl : rookLightUrl
-    }
-
-    if (piece.pieceType == 'bishop') {
-      imageUrl = piece.getColor() == Colors.BLACK ? bishopDarkUrl : bishopLightUrl
-    }
-
-    if (piece.pieceType == 'knight') {
-      imageUrl = piece.getColor() == Colors.BLACK ? knightDarkUrl : knightLightUrl
-    }
-
-    if (piece.pieceType == 'pawn') {
-      imageUrl = piece.getColor() == Colors.BLACK ? pawnDarkUrl : pawnLightUrl
-    }
-    return (<img className={'piece'} src={imageUrl} />)
+    return (<div className={classList} style={style}>{ text }</div>)
+    // return (<img className={'piece'} src={imageUrl} />)
   }
 }
