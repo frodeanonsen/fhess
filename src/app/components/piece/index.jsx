@@ -52,8 +52,8 @@ export default class PieceComponent extends Component {
    const { isPressed, delta: [dx, dy] } = this.state;
     if(isPressed) {
       const mouse = [pageX - dx, pageY - dy];
-      const hoverCol = Math.round((mouse[0] - 5) / 100);
-      const hoverRow = Math.round((mouse[1] - 5) / 100);
+      const hoverCol = Math.round((mouse[0]) / 100);
+      const hoverRow = Math.round((mouse[1]) / 100);
       this.setState({mouse: mouse, hoverCol, hoverRow})
     }
   }
@@ -68,8 +68,8 @@ export default class PieceComponent extends Component {
     const color = piece.color == 1 ? 'black' : 'white'
     const classList = `piece ${color}`
     const text = piece.notation
-    const x = hoverCol * 100 + 5;
-    const y = hoverRow * 100 + 5;
+    const x = hoverCol * 100;
+    const y = hoverRow * 100;
     let motionStyle
     let imageUrl = pawnLightUrl
   
@@ -118,7 +118,7 @@ export default class PieceComponent extends Component {
             style={{
               WebkitTransform: `translate3d(${translateX}px, ${translateY}px, 0) scale(${scale})`,
               transform: `translate3d(${translateX}px, ${translateY}px, 0) scale(${scale})`,
-            }}><img className="piece-image" src={imageUrl}/></div>
+            }}><img draggable="false" className="piece-image" src={imageUrl}/></div>
         }
       </Motion>
     )

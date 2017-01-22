@@ -1,9 +1,9 @@
 .piece {
   text-align: center;
   border-radius: 50%;
-  width: 90px;
-  height: 90px;
-  line-height: 90px;
+  width: 100px;
+  height: 100px;
+  line-height: 100px;
   position: absolute;
 
   &.white {
@@ -17,7 +17,6 @@
   }
 }
 .piece-image {
-  width: 90px;
-  height: 90px;
-  pointer-events: none;
+  width: 100px;
+  height: 100px;
 }
