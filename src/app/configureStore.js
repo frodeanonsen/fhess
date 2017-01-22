@@ -2,7 +2,8 @@ import { createStore, applyMiddleware } from 'redux';
 import rootReducer from './reducers';
 
 const middlewares = [];
-if (process.env.NODE_ENV !== 'production') {
+//if (process.env.NODE_ENV !== 'production') {
+if (true) {
     // eslint-disable-next-line global-require
     const createLogger = require('redux-logger');
     const logger = createLogger();

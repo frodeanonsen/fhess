@@ -22,6 +22,7 @@ export default class PieceComponent extends Component {
   
   constructor(props) {
     super(props)
+    this.liftPiece = this.props.liftPiece
     this.state = {
       isPressed: false,
       col: props.piece.col,
@@ -39,6 +40,8 @@ export default class PieceComponent extends Component {
   }
   
   handleMouseDown([pressX, pressY], {pageX, pageY}) {
+  
+    this.liftPiece(this.props.piece)
     this.setState({
       isPressed: true,
       delta: [pageX - pressX, pageY - pressY],
