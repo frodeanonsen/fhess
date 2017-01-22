@@ -13,7 +13,6 @@ export default class SquareComponent extends React.Component {
     const piece = square.getPiece()
     return (
       <div className={cssClasses}>
-        {piece !== undefined ? <PieceComponent piece={piece} /> : ''}
       </div>
       )
   }
