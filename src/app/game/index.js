@@ -10,7 +10,6 @@ export default class Game {
   board: Board
 
   initialize() {
-    this.board.initialize()
     this.position = StartingPosition
   }
 

@@ -10,7 +10,6 @@ export default class SquareComponent extends React.Component {
     const square:Square = this.props.square
     const colorClass = square.color == 0 ? 'white' : 'black'
     const cssClasses = `square ${colorClass}`
-    const piece = square.getPiece()
     return (
       <div className={cssClasses}>
       </div>

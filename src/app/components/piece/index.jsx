@@ -44,8 +44,6 @@ export default class PieceComponent extends Component {
       delta: [pageX - pressX, pageY - pressY],
       mouse: [pressX, pressY]
     })
-    console.log(pressX, pressY, pageX, pageY)
-    
   }
   
   handleMouseMove({pageX, pageY}) {
