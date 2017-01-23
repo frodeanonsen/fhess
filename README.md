@@ -7,16 +7,18 @@ Frodes Chess, an adventure in Javascript
 
 ### Flow
 We use the Flow library static type checking
-Install flow-bin. https://flowtype.org/docs/getting-started.html
-Install flow-typed
-Install flow-typed for jest: `flow-typed install jest@17.0.3`
+https://flowtype.org/docs/getting-started.html
 
-Build
+run `npm run setup:flow`
+
+### Build
 `npm run build`
+
 or with watch: `npm run build:watch`
 
-Test
+### Test
 `npm run test`
+
 or with watch: `npm run test:watch`
 
 ## Contributions

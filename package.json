@@ -11,7 +11,8 @@
     "test:watch": "NODE_ENV=test jest --watch --verbose",
     "build": "webpack --config webpack/webpack.prod.config.js --progress --colors",
     "build:watch": "NODE_ENV=dev webpack-dev-server --config webpack/webpack.dev.config.js --progress --colors",
-    "flow": "node_modules/.bin/flow"
+    "flow": "node_modules/.bin/flow",
+    "setup:flow": "flow-typed install jest@17.0.3"
   },
   "dependencies": {
     "babel-core": "^6.18.2",
@@ -26,6 +27,7 @@
     "eslint-plugin-react": "^6.7.1",
     "extract-text-webpack-plugin": "^1.0.1",
     "flow-bin": "^0.36.0",
+    "flow-typed": "^2.0.0",
     "handlebars": "^4.0.6",
     "handlebars-loader": "^1.4.0",
     "html-webpack-plugin": "^2.24.1",
