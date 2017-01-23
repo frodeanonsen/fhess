@@ -10,7 +10,8 @@
     "test": "NODE_ENV=test jest --verbose",
     "test:watch": "NODE_ENV=test jest --watch --verbose",
     "build": "webpack --config webpack/webpack.prod.config.js --progress --colors",
-    "build:watch": "NODE_ENV=dev webpack-dev-server --config webpack/webpack.dev.config.js --progress --colors"
+    "build:watch": "NODE_ENV=dev webpack-dev-server --config webpack/webpack.dev.config.js --progress --colors",
+    "flow": "node_modules/.bin/flow"
   },
   "dependencies": {
     "babel-core": "^6.18.2",
