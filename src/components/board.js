@@ -1,15 +1,13 @@
 // @flow
 
 import React from 'react'
-import Board from '../game/board'
-import Square from '../game/board/square'
 import Game from '../game'
 import SquareComponent from './square'
 
 export default class BoardComponent extends React.Component {
   render() {
     const game:Game = this.props.game
-    const { player1, player2, board } = game
+    const { board } = game
 
     const s = []
 
@@ -21,23 +19,22 @@ export default class BoardComponent extends React.Component {
       s.push(col)
     }
 
+    let rowNum = 0
     const rows = s.map(row => {
+    rowNum++
       return (
-        <div className='row'>
+        <div key={`r${rowNum}`} className='row'>
           {row.map( square => {
-           return (<SquareComponent square={square} />)
+            const id = `${square.getCol()}x${square.getRow()}`
+            return (<SquareComponent key={id} square={square} />)
          })}
-         </div>
+        </div>
       )
     })
 
     return (
       <div>
-        <div>Player 1: {player1.name}</div>
-        <div>Player 2: {player2.name}</div>
-        <div>
-          {rows}
-        </div>
+        {rows}
       </div>
     )
   }

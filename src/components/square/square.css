@@ -1,15 +1,15 @@
 .square {
   width: 100px;
   height: 100px;
+  }
 
-  &.white {
+.square.white {
     background-color: #eee;
   }
 
-  &.black {
+.square.black {
     background-color: #666;
   }
-}
 
 .row {
   float: left;

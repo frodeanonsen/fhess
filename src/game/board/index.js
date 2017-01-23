@@ -58,7 +58,7 @@ export default class Board {
 
   getSquareA(pos:string) {
     const [letterPos:string, numberPos:number] = pos.split('')
-    const row = this.rows - parseInt(numberPos)
+    const row = this.rows - parseInt(numberPos, 10)
     const col = Board.letterPosToCol(letterPos)
     return this.squares[row][col]
   }
