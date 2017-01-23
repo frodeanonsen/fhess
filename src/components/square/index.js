@@ -2,7 +2,6 @@
 
 import React from 'react'
 import Square from '../../game/board/square'
-import PieceComponent from '../piece'
 import './square.css'
 
 export default class SquareComponent extends React.Component {

@@ -1,7 +1,7 @@
 // @flow
 
-import React, {Component} from 'react'
-import {Piece, Colors} from '../../game/pieces'
+import React, { Component } from 'react'
+import { Colors } from '../../game/pieces'
 import bishopDarkUrl from './images/Chess_bdt45.svg'
 import bishopLightUrl from './images/Chess_blt45.svg'
 import kingDarkUrl from './images/Chess_kdt45.svg'
@@ -14,8 +14,8 @@ import queenDarkUrl from './images/Chess_qdt45.svg'
 import queenLightUrl from './images/Chess_qlt45.svg'
 import rookDarkUrl from './images/Chess_rdt45.svg'
 import rookLightUrl from './images/Chess_rlt45.svg'
-import './piece.css'
 import { Motion, spring } from 'react-motion'
+import './piece.css'
 
 export default class PieceComponent extends Component {
 
@@ -65,36 +65,33 @@ export default class PieceComponent extends Component {
   render() {
     const { key, piece } = this.props
     const { isPressed, hoverCol, hoverRow, mouse: [mouseX, mouseY] } = this.state
-    const color = piece.color == 1 ? 'black' : 'white'
-    const classList = `piece ${color}`
-    const text = piece.notation
     const x = hoverCol * 100;
     const y = hoverRow * 100;
     let motionStyle
     let imageUrl = pawnLightUrl
 
-    if (piece.pieceType == 'queen') {
-      imageUrl = piece.getColor() == Colors.BLACK ? queenDarkUrl : queenLightUrl
+    if (piece.pieceType === 'queen') {
+      imageUrl = piece.getColor() === Colors.BLACK ? queenDarkUrl : queenLightUrl
     }
 
-    if (piece.pieceType == 'king') {
-      imageUrl = piece.getColor() == Colors.BLACK ? kingDarkUrl : kingLightUrl
+    if (piece.pieceType === 'king') {
+      imageUrl = piece.getColor() === Colors.BLACK ? kingDarkUrl : kingLightUrl
     }
 
-    if (piece.pieceType == 'rook') {
-      imageUrl = piece.getColor() == Colors.BLACK ? rookDarkUrl : rookLightUrl
+    if (piece.pieceType === 'rook') {
+      imageUrl = piece.getColor() === Colors.BLACK ? rookDarkUrl : rookLightUrl
     }
 
-    if (piece.pieceType == 'bishop') {
-      imageUrl = piece.getColor() == Colors.BLACK ? bishopDarkUrl : bishopLightUrl
+    if (piece.pieceType === 'bishop') {
+      imageUrl = piece.getColor() === Colors.BLACK ? bishopDarkUrl : bishopLightUrl
     }
 
-    if (piece.pieceType == 'knight') {
-      imageUrl = piece.getColor() == Colors.BLACK ? knightDarkUrl : knightLightUrl
+    if (piece.pieceType === 'knight') {
+      imageUrl = piece.getColor() === Colors.BLACK ? knightDarkUrl : knightLightUrl
     }
 
-    if (piece.pieceType == 'pawn') {
-      imageUrl = piece.getColor() == Colors.BLACK ? pawnDarkUrl : pawnLightUrl
+    if (piece.pieceType === 'pawn') {
+      imageUrl = piece.getColor() === Colors.BLACK ? pawnDarkUrl : pawnLightUrl
     }
     if (isPressed) {
       motionStyle = {
@@ -118,7 +115,7 @@ export default class PieceComponent extends Component {
             style={{
               WebkitTransform: `translate3d(${translateX}px, ${translateY}px, 0) scale(${scale})`,
               transform: `translate3d(${translateX}px, ${translateY}px, 0) scale(${scale})`,
-            }}><img draggable="false" className="piece-image" src={imageUrl}/></div>
+            }}><img draggable="false" className="piece-image" src={imageUrl} alt="Piece"/></div>
         }
       </Motion>
     )

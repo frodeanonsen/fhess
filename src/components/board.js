@@ -2,14 +2,13 @@
 
 import React from 'react'
 import { connect } from 'react-redux'
-import Board from '../game/board'
-import Square from '../game/board/square'
 import Game from '../game'
 import SquareComponent from './square'
 import PieceComponent from './piece'
 import { liftPiece } from '../actions'
 
 class BoardComponent extends React.Component {
+
   render() {
     const game:Game = this.props.game
     const { board } = game
