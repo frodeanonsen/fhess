@@ -1,7 +1,8 @@
 .square {
-  width: 100px;
-  height: 100px;
-  }
+  width: 90px;
+  height: 90px;
+  padding: 5px;
+}
 
 .square.white {
     background-color: #eee;

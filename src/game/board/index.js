@@ -32,36 +32,5 @@ export default class Board {
     }
   }
 
-  setupFirstRowPieces(col: number, color:number) {
-    this.squares[col][0].setPiece(new Rook(color))
-    this.squares[col][1].setPiece(new Knight(color))
-    this.squares[col][2].setPiece(new Bishop(color))
-    this.squares[col][3].setPiece(new Queen(color))
-    this.squares[col][4].setPiece(new King(color))
-    this.squares[col][5].setPiece(new Bishop(color))
-    this.squares[col][6].setPiece(new Knight(color))
-    this.squares[col][7].setPiece(new Rook(color))
-  }
-
-  setupPawnRow(col: number, color:number) {
-    for (let row = 0; row < this.rows; row += 1) {
-      this.squares[col][row].setPiece(new Pawn(color))
-    }
-  }
-
-  initialize() {
-    this.setupFirstRowPieces(0, Colors.BLACK)
-    this.setupFirstRowPieces(7, Colors.WHITE)
-    this.setupPawnRow(1, Colors.BLACK)
-    this.setupPawnRow(6, Colors.WHITE)
-  }
-
-  getSquareA(pos:string) {
-    const [letterPos:string, numberPos:number] = pos.split('')
-    const row = this.rows - parseInt(numberPos, 10)
-    const col = Board.letterPosToCol(letterPos)
-    return this.squares[row][col]
-  }
-
   getSquareByRowCol(row:number, col:number) { return this.squares[row][col] }
 }

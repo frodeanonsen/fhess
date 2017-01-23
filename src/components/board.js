@@ -1,13 +1,19 @@
 // @flow
 
 import React from 'react'
+import { connect } from 'react-redux'
+import Board from '../game/board'
+import Square from '../game/board/square'
 import Game from '../game'
 import SquareComponent from './square'
+import PieceComponent from './piece'
+import { liftPiece } from '../actions'
 
-export default class BoardComponent extends React.Component {
+class BoardComponent extends React.Component {
   render() {
     const game:Game = this.props.game
     const { board } = game
+    const { liftPiece } = this.props
 
     const s = []
 
@@ -32,10 +38,31 @@ export default class BoardComponent extends React.Component {
       )
     })
 
+
+    const piecesComps = game.position.pieces.map( (p, key) => {
+      return <PieceComponent key={key} piece={p} liftPiece={liftPiece}/>
+    })
+
     return (
       <div>
-        {rows}
+        <div>
+          {rows}
+        </div>
+        <div>
+          {piecesComps}
+        </div>
       </div>
     )
   }
 }
+
+export default connect(
+  (state) => {
+    return { game: state }
+  },
+  (dispatch) => {
+    return {
+      liftPiece: piece => dispatch(liftPiece(piece))
+    }
+  }
+)(BoardComponent)

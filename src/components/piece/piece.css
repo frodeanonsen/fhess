@@ -1,3 +1,22 @@
 .piece {
-  width: 75px;
+  text-align: center;
+  border-radius: 50%;
+  width: 100px;
+  height: 100px;
+  line-height: 100px;
+  position: absolute;
+
+  &.white {
+    background-color: white;
+    color: black;
+  }
+
+  &.black {
+    background-color: black;
+    color: white;
+  }
+}
+.piece-image {
+  width: 100px;
+  height: 100px;
 }

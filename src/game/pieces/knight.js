@@ -3,7 +3,7 @@
 import Piece from './piece'
 
 export default class Knight extends Piece {
-  constructor(color:number) {
-    super(color, 'knight')
+  constructor(col:number, row:number, color:number) {
+    super(col, row, color, 'knight', 'N')
   }
 }
