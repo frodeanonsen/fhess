@@ -22,6 +22,7 @@ export default class PieceComponent extends Component {
   constructor(props) {
     super(props)
     this.liftPiece = this.props.liftPiece
+    this.placePiece = this.props.placePiece
     this.state = {
       isPressed: false,
       col: props.piece.col,
@@ -58,40 +59,43 @@ export default class PieceComponent extends Component {
     }
   }
 
-  handleMouseUp() {
-    this.setState({isPressed: false})
+  handleMouseUp(e) {
+    if (this.state.isPressed) {
+      this.placePiece(this.props.piece, {col: this.state.hoverCol, row: this.state.hoverRow})
+      this.setState({isPressed: false})
+    }
   }
 
   render() {
     const { key, piece } = this.props
     const { isPressed, hoverCol, hoverRow, mouse: [mouseX, mouseY] } = this.state
-    const x = hoverCol * 100;
-    const y = hoverRow * 100;
+    const x = piece.col * 100;
+    const y = piece.row * 100;
     let motionStyle
     let imageUrl = pawnLightUrl
 
     if (piece.pieceType === 'queen') {
-      imageUrl = piece.getColor() === Colors.BLACK ? queenDarkUrl : queenLightUrl
+      imageUrl = piece.color === Colors.BLACK ? queenDarkUrl : queenLightUrl
     }
 
     if (piece.pieceType === 'king') {
-      imageUrl = piece.getColor() === Colors.BLACK ? kingDarkUrl : kingLightUrl
+      imageUrl = piece.color === Colors.BLACK ? kingDarkUrl : kingLightUrl
     }
 
     if (piece.pieceType === 'rook') {
-      imageUrl = piece.getColor() === Colors.BLACK ? rookDarkUrl : rookLightUrl
+      imageUrl = piece.color === Colors.BLACK ? rookDarkUrl : rookLightUrl
     }
 
     if (piece.pieceType === 'bishop') {
-      imageUrl = piece.getColor() === Colors.BLACK ? bishopDarkUrl : bishopLightUrl
+      imageUrl = piece.color === Colors.BLACK ? bishopDarkUrl : bishopLightUrl
     }
 
     if (piece.pieceType === 'knight') {
-      imageUrl = piece.getColor() === Colors.BLACK ? knightDarkUrl : knightLightUrl
+      imageUrl = piece.color === Colors.BLACK ? knightDarkUrl : knightLightUrl
     }
 
     if (piece.pieceType === 'pawn') {
-      imageUrl = piece.getColor() === Colors.BLACK ? pawnDarkUrl : pawnLightUrl
+      imageUrl = piece.color === Colors.BLACK ? pawnDarkUrl : pawnLightUrl
     }
     if (isPressed) {
       motionStyle = {
