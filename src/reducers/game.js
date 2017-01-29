@@ -30,6 +30,9 @@ const getValidMoves = (piece:Piece, position) => {
         case 'pawn': {
             return getValidPawnMoves(piece, paddedPosition)
         }
+        case 'knight': {
+            return getValidKnightMoves(piece, paddedPosition)
+        }
         default: {
             return [];
         }
@@ -40,9 +43,7 @@ const getValidPawnMoves = (piece:Piece, position) => {
     
     let validPawnMoves = [];
     let direction;
-    const col = piece.col;
-    const row = piece.row;
-    const color = piece.color;
+    const { col, row, color } = piece;
     color === 0 ? direction = -1 : direction = 1
     if (!position[col][row + direction]) {
         validPawnMoves.push({col: col, row: row + direction, type: 'move'})
@@ -60,6 +61,44 @@ const getValidPawnMoves = (piece:Piece, position) => {
     }
     //Add isKingInCheck check
     return validPawnMoves;
+}
+
+const getValidKnightMoves = (piece:Piece, position) => {
+    
+    let validKnightMoves = [];
+    const { col, row, color } = piece;
+    const initialMoves = [
+        { col: col + 1, row: row - 2 },
+        { col: col + 2, row: row - 1 },
+        { col: col + 2, row: row + 1 },
+        { col: col + 1, row: row + 2 },
+        { col: col - 1, row: row - 2 },
+        { col: col - 2, row: row - 1 },
+        { col: col - 2, row: row + 1 },
+        { col: col - 1, row: row + 2 }
+    ];
+    
+    // Filter out of bounds moves
+    validKnightMoves = initialMoves.filter(m => 0 <= m.col && m.col <= 7 && 0 <= m.row && m.row <= 7);
+    
+    // Filter moves blocked by own pieces
+    validKnightMoves = validKnightMoves.filter(m => {
+        if (position[m.col][m.row]) {
+            return position[m.col][m.row].color !== color;
+        }
+        return true;
+    })
+    
+    // Determine move type
+    validKnightMoves = validKnightMoves.map(m => {
+        if (position[m.col][m.row]) {
+            return { ...m , type: 'capture' };
+        }
+        return { ...m , type: 'move' };
+    })
+    
+    //Add isKingInCheck check
+    return validKnightMoves;
 }
 
 export default (state = initialState, action) => {
