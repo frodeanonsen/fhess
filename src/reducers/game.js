@@ -42,6 +42,9 @@ const getValidMoves = (piece:Piece, position) => {
         case 'queen': {
             return getValidQueenMoves(piece, paddedPosition)
         }
+        case 'king': {
+            return getValidKingMoves(piece, paddedPosition)
+        }
         default: {
             return [];
         }
@@ -71,6 +74,44 @@ const getValidPawnMoves = (piece:Piece, position) => {
     //Add isKingInCheck check
     return validPawnMoves;
 }
+const getValidKingMoves = (piece:Piece, position) => {
+    
+    let validKingMoves = [];
+    const { col, row, color } = piece;
+    const initialMoves = [
+        { col: col + 1, row: row - 1 },
+        { col: col + 1, row: row },
+        { col: col + 1, row: row + 1 },
+        { col: col, row: row + 1 },
+        { col: col - 1, row: row + 1 },
+        { col: col - 1, row: row },
+        { col: col - 1, row: row - 1 },
+        { col: col, row: row - 1 }
+    ];
+    
+    // Filter out of bounds moves
+    validKingMoves = initialMoves.filter(m => 0 <= m.col && m.col <= 7 && 0 <= m.row && m.row <= 7);
+    
+    // Filter moves blocked by own pieces
+    validKingMoves = validKingMoves.filter(m => {
+        if (position[m.col][m.row]) {
+            return position[m.col][m.row].color !== color;
+        }
+        return true;
+    })
+    
+    // Determine move type
+    validKingMoves = validKingMoves.map(m => {
+        if (position[m.col][m.row]) {
+            return { ...m , type: 'capture' };
+        }
+        return { ...m , type: 'move' };
+    })
+    
+    //Add isKingInCheck check
+    return validKingMoves;
+}
+
 
 const getValidKnightMoves = (piece:Piece, position) => {
     
