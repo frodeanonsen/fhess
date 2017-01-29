@@ -17,8 +17,19 @@ const initialState = {
     }
 }
 
-const getValidMoves = (piece:Piece, position) => {
+const resolveMove = (piece, position, move) => {
+    let newPosition = [ ...position ];
+    newPosition[piece.col][piece.row] = null;
+    newPosition[move.col][move.row] = { ...piece };
     
+    return newPosition;
+}
+
+const unpadPosition = (paddedPosition) => {
+   return paddedPosition.filter(p => p !== null);
+}
+
+const padPosition = (position) => {
     let paddedPosition = [];
     for(let i = 0; i < 8; i++){
         paddedPosition.push(new Array(8).fill(null));
@@ -26,29 +37,71 @@ const getValidMoves = (piece:Piece, position) => {
     
     position.pieces.map(p => paddedPosition[p.col][p.row] = { ...p });
     
+    return paddedPosition;
+}
+
+const isKingInCheck = (position, color) => {
+   const king = position.map(r => {
+       return r.filter(p => {
+           if(p !== null) {
+               return (p.pieceType === 'king' && p.color === color);
+           }
+           return false;
+       })[0]
+   }).filter(p => p !== undefined)[0];
+    
+    if (getValidBishopMoves(king, position).filter(m => m.type === 'capture')
+      .filter(m => position[m.col][m.row].pieceType === 'bishop' || position[m.col][m.row].pieceType === 'queen').length > 0) {
+        return true;
+    }
+    if (getValidRookMoves(king, position).filter(m => m.type === 'capture')
+        .filter(m => position[m.col][m.row].pieceType === 'rook' || position[m.col][m.row].pieceType === 'queen').length > 0) {
+        return true;
+    }
+    if (getValidKnightMoves(king, position).filter(m => m.type === 'capture')
+        .filter(m => position[m.col][m.row].pieceType === 'knight').length > 0) {
+        return true;
+    }
+    return getValidPawnMoves(king, position).filter(m => m.type === 'capture')
+        .filter(m => position[m.col][m.row].pieceType === 'pawn').length > 0;
+    
+}
+
+const getValidMoves = (piece:Piece, position) => {
+    
+    const paddedPosition = padPosition(position);
+    let validMoves;
+    
     switch (piece.pieceType) {
         case 'pawn': {
-            return getValidPawnMoves(piece, paddedPosition)
+            validMoves = getValidPawnMoves(piece, paddedPosition)
+            break;
         }
         case 'knight': {
-            return getValidKnightMoves(piece, paddedPosition)
+            validMoves = getValidKnightMoves(piece, paddedPosition)
+            break;
         }
         case 'bishop': {
-            return getValidBishopMoves(piece, paddedPosition)
+            validMoves = getValidBishopMoves(piece, paddedPosition)
+            break;
         }
         case 'rook': {
-            return getValidRookMoves(piece, paddedPosition)
+            validMoves = getValidRookMoves(piece, paddedPosition)
+            break;
         }
         case 'queen': {
-            return getValidQueenMoves(piece, paddedPosition)
+            validMoves = getValidQueenMoves(piece, paddedPosition)
+            break;
         }
         case 'king': {
-            return getValidKingMoves(piece, paddedPosition)
+            validMoves = getValidKingMoves(piece, paddedPosition)
+            break;
         }
         default: {
-            return [];
+            validMoves = [];
         }
     }
+    return validMoves.filter(m => !isKingInCheck(resolveMove(piece, paddedPosition, m), piece.color));
 }
 
 const getValidPawnMoves = (piece:Piece, position) => {
@@ -71,7 +124,6 @@ const getValidPawnMoves = (piece:Piece, position) => {
     if (position[col + 1][row + direction] !== null && position[col + 1][row + direction].color !== color ) {
         validPawnMoves.push({col: col + 1, row: row + direction, type: 'capture'})
     }
-    //Add isKingInCheck check
     return validPawnMoves;
 }
 const getValidKingMoves = (piece:Piece, position) => {
@@ -108,7 +160,6 @@ const getValidKingMoves = (piece:Piece, position) => {
         return { ...m , type: 'move' };
     })
     
-    //Add isKingInCheck check
     return validKingMoves;
 }
 
@@ -147,7 +198,6 @@ const getValidKnightMoves = (piece:Piece, position) => {
         return { ...m , type: 'move' };
     })
     
-    //Add isKingInCheck check
     return validKnightMoves;
 }
 
@@ -165,10 +215,10 @@ const getValidStraightLineMoves = (x, y, piece, position) => {
           if(!position[newCol][newRow]) {
               validMoves.push({col: newCol, row: newRow, type: 'move'})
               i++;
-          } else if (!position[newCol][newRow].color !== color) {
+          } else if (position[newCol][newRow].color !== color) {
               validMoves.push({col: newCol, row: newRow, type: 'capture'})
               break;
-          } else if (!position[newCol][newRow].color === color) {
+          } else if (position[newCol][newRow].color === color) {
               break;
           }
       } else {
@@ -188,7 +238,6 @@ const getValidBishopMoves = (piece:Piece, position) => {
     getValidStraightLineMoves(-1, 1, piece, position).map(m => validBishopMoves.push(m));
     getValidStraightLineMoves(-1, -1, piece, position).map(m => validBishopMoves.push(m));
     
-    //Add isKingInCheck check
     return validBishopMoves;
 }
 
@@ -202,7 +251,6 @@ const getValidRookMoves = (piece:Piece, position) => {
     getValidStraightLineMoves(1, 0, piece, position).map(m => validRookMoves.push(m));
     getValidStraightLineMoves(-1, 0, piece, position).map(m => validRookMoves.push(m));
     
-    //Add isKingInCheck check
     return validRookMoves;
 }
 
@@ -214,14 +262,13 @@ const getValidQueenMoves = (piece:Piece, position) => {
     getValidRookMoves(piece, position).map(m => validQueenMoves.push(m));
     getValidBishopMoves(piece, position).map(m => validQueenMoves.push(m));
     
-    //Add isKingInCheck check
     return validQueenMoves;
 }
 
 export default (state = initialState, action) => {
     switch (action.type) {
         case PIECE_LIFTED: {
-            const validMoves = getValidMoves(action.payload.piece, state.position);
+            // const validMoves = getValidMoves(action.payload.piece, state.position);
             return state
         }
         case PIECE_PLACED: {
