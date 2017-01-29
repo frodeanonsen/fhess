@@ -20,13 +20,17 @@ const initialState = {
 const resolveMove = (piece, position, move) => {
     let newPosition = [ ...position ];
     newPosition[piece.col][piece.row] = null;
-    newPosition[move.col][move.row] = { ...piece };
+    newPosition[move.col][move.row] = { ...piece, col: move.col, row: move.row };
     
     return newPosition;
 }
 
 const unpadPosition = (paddedPosition) => {
-   return paddedPosition.filter(p => p !== null);
+    let unpaddedPosition = []
+   paddedPosition.map(r => {
+       r.filter(p => p !== null).map(p => unpaddedPosition.push(p))
+   });
+    return unpaddedPosition;
 }
 
 const padPosition = (position) => {
@@ -35,7 +39,7 @@ const padPosition = (position) => {
         paddedPosition.push(new Array(8).fill(null));
     }
     
-    position.pieces.map(p => paddedPosition[p.col][p.row] = { ...p });
+    position.map(p => paddedPosition[p.col][p.row] = { ...p });
     
     return paddedPosition;
 }
@@ -69,7 +73,7 @@ const isKingInCheck = (position, color) => {
 
 const getValidMoves = (piece:Piece, position) => {
     
-    const paddedPosition = padPosition(position);
+    const paddedPosition = padPosition(position.pieces);
     let validMoves;
     
     switch (piece.pieceType) {
@@ -274,18 +278,13 @@ export default (state = initialState, action) => {
         case PIECE_PLACED: {
             const { piece, target } = action.payload;
             const validMoves = getValidMoves(action.payload.piece, state.position);
-            if (validMoves.filter(m => m.col === action.payload.target.col && m.row === action.payload.target.row).length) {
+            const move = validMoves.filter(m => m.col === action.payload.target.col && m.row === action.payload.target.row)[0];
+            if (move) {
                return {
                    ...state,
                    position: {
                      ...state.position,
-                       pieces: state.position.pieces.map(p => {
-                         if (p.col === piece.col && p.row === piece.row) {
-                             return { ...p, col: target.col, row: target.row};
-                         } else {
-                             return p;
-                         }
-                       })
+                       pieces: unpadPosition(resolveMove(action.payload.piece, padPosition(state.position.pieces), move))
                    }
                }
             }

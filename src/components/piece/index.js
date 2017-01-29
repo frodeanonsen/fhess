@@ -61,8 +61,8 @@ export default class PieceComponent extends Component {
 
   handleMouseUp(e) {
     if (this.state.isPressed) {
-      this.placePiece(this.props.piece, {col: this.state.hoverCol, row: this.state.hoverRow})
       this.setState({isPressed: false})
+      this.placePiece(this.props.piece, {col: this.state.hoverCol, row: this.state.hoverRow})
     }
   }
 

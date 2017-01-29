@@ -38,8 +38,10 @@ class BoardComponent extends React.Component {
     })
 
 
-    const piecesComps = game.position.pieces.map( (p, key) => {
-      return <PieceComponent key={key} piece={p} liftPiece={liftPiece} placePiece={placePiece}/>
+    const piecesComps = game.position.pieces.map( (p) => {
+      return (
+        <PieceComponent key={p.id} piece={p} liftPiece={liftPiece} placePiece={placePiece}/>
+      )
     })
 
     return (
