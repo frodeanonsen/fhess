@@ -39,6 +39,9 @@ const getValidMoves = (piece:Piece, position) => {
         case 'rook': {
             return getValidRookMoves(piece, paddedPosition)
         }
+        case 'queen': {
+            return getValidQueenMoves(piece, paddedPosition)
+        }
         default: {
             return [];
         }
@@ -160,6 +163,18 @@ const getValidRookMoves = (piece:Piece, position) => {
     
     //Add isKingInCheck check
     return validRookMoves;
+}
+
+const getValidQueenMoves = (piece:Piece, position) => {
+    
+    let validQueenMoves = [];
+    const { col, row, color } = piece;
+    
+    getValidRookMoves(piece, position).map(m => validQueenMoves.push(m));
+    getValidBishopMoves(piece, position).map(m => validQueenMoves.push(m));
+    
+    //Add isKingInCheck check
+    return validQueenMoves;
 }
 
 export default (state = initialState, action) => {
