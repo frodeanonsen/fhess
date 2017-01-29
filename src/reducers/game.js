@@ -118,10 +118,10 @@ const getValidPawnMoves = (piece:Piece, position) => {
            validPawnMoves.push({col: col, row: row + (2*direction), type: 'move'})
        }
     }
-    if (position[col - 1][row + direction] !== null && position[col - 1][row + direction].color !== color ) {
+    if (col - 1 >= 0 && position[col - 1][row + direction] !== null && position[col - 1][row + direction].color !== color) {
         validPawnMoves.push({col: col - 1, row: row + direction, type: 'capture'})
     }
-    if (position[col + 1][row + direction] !== null && position[col + 1][row + direction].color !== color ) {
+    if (col + 1 <= 7 && position[col + 1][row + direction] !== null && position[col + 1][row + direction].color !== color) {
         validPawnMoves.push({col: col + 1, row: row + direction, type: 'capture'})
     }
     return validPawnMoves;
