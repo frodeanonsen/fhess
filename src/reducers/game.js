@@ -33,6 +33,9 @@ const getValidMoves = (piece:Piece, position) => {
         case 'knight': {
             return getValidKnightMoves(piece, paddedPosition)
         }
+        case 'bishop': {
+            return getValidBishopMoves(piece, paddedPosition)
+        }
         default: {
             return [];
         }
@@ -99,6 +102,47 @@ const getValidKnightMoves = (piece:Piece, position) => {
     
     //Add isKingInCheck check
     return validKnightMoves;
+}
+
+const getValidStraightLineMoves = (x, y, piece, position) => {
+  
+    const { col, row, color } = piece;
+    
+    let validMoves = [];
+    let i = 1;
+    
+    while (true) {
+        const newCol = col + (i * x);
+        const newRow = row + (i * y);
+      if(0 <= newCol && newCol <= 7 && 0 <= newRow && newRow <= 7) {
+          if(!position[newCol][newRow]) {
+              validMoves.push({col: newCol, row: newRow, type: 'move'})
+              i++;
+          } else if (!position[newCol][newRow].color !== color) {
+              validMoves.push({col: newCol, row: newRow, type: 'capture'})
+              break;
+          } else if (!position[newCol][newRow].color === color) {
+              break;
+          }
+      } else {
+          break;
+      }
+    }
+    return validMoves;
+}
+
+const getValidBishopMoves = (piece:Piece, position) => {
+    
+    let validBishopMoves = [];
+    const { col, row, color } = piece;
+  
+    getValidStraightLineMoves(1, 1, piece, position).map(m => validBishopMoves.push(m));
+    getValidStraightLineMoves(1, -1, piece, position).map(m => validBishopMoves.push(m));
+    getValidStraightLineMoves(-1, 1, piece, position).map(m => validBishopMoves.push(m));
+    getValidStraightLineMoves(-1, -1, piece, position).map(m => validBishopMoves.push(m));
+    
+    //Add isKingInCheck check
+    return validBishopMoves;
 }
 
 export default (state = initialState, action) => {
