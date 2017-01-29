@@ -36,6 +36,9 @@ const getValidMoves = (piece:Piece, position) => {
         case 'bishop': {
             return getValidBishopMoves(piece, paddedPosition)
         }
+        case 'rook': {
+            return getValidRookMoves(piece, paddedPosition)
+        }
         default: {
             return [];
         }
@@ -143,6 +146,20 @@ const getValidBishopMoves = (piece:Piece, position) => {
     
     //Add isKingInCheck check
     return validBishopMoves;
+}
+
+const getValidRookMoves = (piece:Piece, position) => {
+    
+    let validRookMoves = [];
+    const { col, row, color } = piece;
+    
+    getValidStraightLineMoves(0, 1, piece, position).map(m => validRookMoves.push(m));
+    getValidStraightLineMoves(0, -1, piece, position).map(m => validRookMoves.push(m));
+    getValidStraightLineMoves(1, 0, piece, position).map(m => validRookMoves.push(m));
+    getValidStraightLineMoves(-1, 0, piece, position).map(m => validRookMoves.push(m));
+    
+    //Add isKingInCheck check
+    return validRookMoves;
 }
 
 export default (state = initialState, action) => {
