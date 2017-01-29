@@ -68,7 +68,7 @@ export default class PieceComponent extends Component {
 
   render() {
     const { key, piece } = this.props
-    const { isPressed, hoverCol, hoverRow, mouse: [mouseX, mouseY] } = this.state
+    const { isPressed, mouse: [mouseX, mouseY] } = this.state
     const x = piece.col * 100;
     const y = piece.row * 100;
     let motionStyle
