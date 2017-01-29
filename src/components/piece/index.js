@@ -1,7 +1,7 @@
 // @flow
 
 import React, { Component } from 'react'
-import { Colors } from '../../game/pieces'
+import { Colors, Piece } from '../../game/pieces'
 import bishopDarkUrl from './images/Chess_bdt45.svg'
 import bishopLightUrl from './images/Chess_blt45.svg'
 import kingDarkUrl from './images/Chess_kdt45.svg'
@@ -17,9 +17,25 @@ import rookLightUrl from './images/Chess_rlt45.svg'
 import { Motion, spring } from 'react-motion'
 import './piece.css'
 
-export default class PieceComponent extends Component {
+type PieceProps = {
+  piece: Piece
+}
 
-  constructor(props) {
+type State = {
+    isPressed: boolean,
+    col: number,
+    row: number,
+    hoverCol: number,
+    hoverRow: number,
+    mouse: Array<number>,
+    delta: Array<number>
+  }
+
+export default class PieceComponent extends Component<void, PieceProps, State> {
+
+  state: State
+
+  constructor(props: PieceProps) {
     super(props)
     this.liftPiece = this.props.liftPiece
     this.placePiece = this.props.placePiece
@@ -39,9 +55,7 @@ export default class PieceComponent extends Component {
     window.addEventListener('mousemove', this.handleMouseMove.bind(this));
   }
 
-  handleMouseDown([pressX, pressY], {pageX, pageY}) {
-
-    this.liftPiece(this.props.piece)
+  handleMouseDown([pressX, pressY]: Array<number>, {pageX, pageY}: {pageX: number, pageY: number}) {
     this.setState({
       isPressed: true,
       delta: [pageX - pressX, pageY - pressY],
@@ -49,7 +63,7 @@ export default class PieceComponent extends Component {
     })
   }
 
-  handleMouseMove({pageX, pageY}) {
+  handleMouseMove({pageX, pageY}: any) {
    const { isPressed, delta: [dx, dy] } = this.state;
     if(isPressed) {
       const mouse = [pageX - dx, pageY - dy];
@@ -97,19 +111,21 @@ export default class PieceComponent extends Component {
     if (piece.pieceType === 'pawn') {
       imageUrl = piece.color === Colors.BLACK ? pawnDarkUrl : pawnLightUrl
     }
+
     if (isPressed) {
       motionStyle = {
-        translateX: spring(mouseX, [300, 40]),
-        translateY: spring(mouseY, [300, 40]),
-        scale: spring(1.2, [300, 40])
+        translateX: spring(mouseX, {stiffness: 300, damping:40}),
+        translateY: spring(mouseY, {stiffness: 300, damping:40}),
+        scale: spring(1.2, {stiffness: 300, damping:40})
       }
     } else {
       motionStyle = {
-        translateX: spring(x, [300, 40]),
-        translateY: spring(y, [300, 40]),
-        scale: spring(1, [300, 40])
+        translateX: spring(x, {stiffness: 300, damping:40}),
+        translateY: spring(y, {stiffness: 300, damping:40}),
+        scale: spring(1, {stiffness: 300, damping:40})
       }
     }
+
     return (
       <Motion style={motionStyle}>
         { ({translateX, translateY, scale}) =>

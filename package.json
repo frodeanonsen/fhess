@@ -2,7 +2,14 @@
   "name": "fhess",
   "version": "0.1.0",
   "private": true,
+  "eslintConfig": {
+    "extends": "react-app"
+  },
   "devDependencies": {
+    "eslint": "^3.14.1",
+    "eslint-config-standard": "^6.2.1",
+    "eslint-plugin-promise": "^3.4.0",
+    "eslint-plugin-standard": "^2.0.1",
     "react-scripts": "0.8.5"
   },
   "dependencies": {

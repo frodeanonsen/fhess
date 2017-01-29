@@ -7,7 +7,6 @@ import { King, Queen, Rook, Bishop, Knight, Pawn, Colors } from '../pieces'
 
 describe('an initialized board', () => {
   const board = new Board()
-  board.initialize()
 
   it('has a black square at the bottom row, 7th column', () => {
     const square = board.getSquareByRowCol(6, 7)

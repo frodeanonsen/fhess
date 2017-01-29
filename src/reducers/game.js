@@ -1,3 +1,5 @@
+// @flow
+
 import { PIECE_LIFTED, PIECE_PLACED } from '../actions/index';
 import Board from '../game/board'
 import { StartingPosition } from '../game/pieces'
@@ -13,7 +15,7 @@ const initialState = {
         whiteCanCastle: true,
         enPassantSquare: null,
         positionHistory: []
-        
+
     }
 }
 
@@ -21,7 +23,7 @@ const resolveMove = (piece, paddedPosition, move) => {
     let newPosition = [ ...paddedPosition ];
     newPosition[piece.col][piece.row] = null;
     newPosition[move.col][move.row] = { ...piece, col: move.col, row: move.row };
-    
+
     return newPosition;
 }
 
@@ -38,19 +40,19 @@ const padPosition = (position) => {
     for(let i = 0; i < 8; i++){
         paddedPosition.push(new Array(8).fill(null));
     }
-    
+
     position.map(p => paddedPosition[p.col][p.row] = { ...p });
-    
+
     return paddedPosition;
 }
 
 const getValidPawnMoves = (piece:Piece, paddedPosition) => {
-    
+
     let validPawnMoves = [];
     let direction;
     const { col, row, color } = piece;
     color === 0 ? direction = -1 : direction = 1
-    
+
     // Add single stem move if not blocked
     if (!paddedPosition[col][row + direction]) {
         validPawnMoves.push({col: col, row: row + direction, type: 'move'})
@@ -61,7 +63,7 @@ const getValidPawnMoves = (piece:Piece, paddedPosition) => {
            validPawnMoves.push({col: col, row: row + (2*direction), type: 'move'})
        }
     }
-    
+
     //Add capture moves if opposing piece is in range
     if (col - 1 >= 0 && paddedPosition[col - 1][row + direction] !== null && paddedPosition[col - 1][row + direction].color !== color) {
         validPawnMoves.push({col: col - 1, row: row + direction, type: 'capture'})
@@ -69,11 +71,11 @@ const getValidPawnMoves = (piece:Piece, paddedPosition) => {
     if (col + 1 <= 7 && paddedPosition[col + 1][row + direction] !== null && paddedPosition[col + 1][row + direction].color !== color) {
         validPawnMoves.push({col: col + 1, row: row + direction, type: 'capture'})
     }
-    
+
     return validPawnMoves;
 }
 const getValidKingMoves = (piece:Piece, paddedPosition) => {
-    
+
     let validKingMoves = [];
     const { col, row, color } = piece;
     const initialMoves = [
@@ -86,10 +88,10 @@ const getValidKingMoves = (piece:Piece, paddedPosition) => {
         { col: col - 1, row: row - 1 },
         { col: col, row: row - 1 }
     ];
-    
+
     // Filter out of bounds moves
     validKingMoves = initialMoves.filter(m => 0 <= m.col && m.col <= 7 && 0 <= m.row && m.row <= 7);
-    
+
     // Filter moves blocked by own pieces
     validKingMoves = validKingMoves.filter(m => {
         if (paddedPosition[m.col][m.row]) {
@@ -97,7 +99,7 @@ const getValidKingMoves = (piece:Piece, paddedPosition) => {
         }
         return true;
     })
-    
+
     // Determine move type
     validKingMoves = validKingMoves.map(m => {
         if (paddedPosition[m.col][m.row]) {
@@ -105,13 +107,13 @@ const getValidKingMoves = (piece:Piece, paddedPosition) => {
         }
         return { ...m , type: 'move' };
     })
-    
+
     return validKingMoves;
 }
 
 
 const getValidKnightMoves = (piece:Piece, paddedPosition) => {
-    
+
     let validKnightMoves = [];
     const { col, row, color } = piece;
     const initialMoves = [
@@ -124,10 +126,10 @@ const getValidKnightMoves = (piece:Piece, paddedPosition) => {
         { col: col - 2, row: row + 1 },
         { col: col - 1, row: row + 2 }
     ];
-    
+
     // Filter out of bounds moves
     validKnightMoves = initialMoves.filter(m => 0 <= m.col && m.col <= 7 && 0 <= m.row && m.row <= 7);
-    
+
     // Filter moves blocked by own pieces
     validKnightMoves = validKnightMoves.filter(m => {
         if (paddedPosition[m.col][m.row]) {
@@ -135,7 +137,7 @@ const getValidKnightMoves = (piece:Piece, paddedPosition) => {
         }
         return true;
     })
-    
+
     // Determine move type
     validKnightMoves = validKnightMoves.map(m => {
         if (paddedPosition[m.col][m.row]) {
@@ -143,17 +145,17 @@ const getValidKnightMoves = (piece:Piece, paddedPosition) => {
         }
         return { ...m , type: 'move' };
     })
-    
+
     return validKnightMoves;
 }
 
 const getValidStraightLineMoves = (x, y, piece, paddedPosition) => {
-  
+
     const { col, row, color } = piece;
-    
+
     let validMoves = [];
     let i = 1;
-    
+
     // Move in a straight line away from the piech and determine move validity and type.
     // Stop when an invalid move is found
     while (true) {
@@ -177,41 +179,41 @@ const getValidStraightLineMoves = (x, y, piece, paddedPosition) => {
 }
 
 const getValidBishopMoves = (piece:Piece, paddedPosition) => {
-    
+
     let validBishopMoves = [];
-  
+
     getValidStraightLineMoves(1, 1, piece, paddedPosition).map(m => validBishopMoves.push(m));
     getValidStraightLineMoves(1, -1, piece, paddedPosition).map(m => validBishopMoves.push(m));
     getValidStraightLineMoves(-1, 1, piece, paddedPosition).map(m => validBishopMoves.push(m));
     getValidStraightLineMoves(-1, -1, piece, paddedPosition).map(m => validBishopMoves.push(m));
-    
+
     return validBishopMoves;
 }
 
 const getValidRookMoves = (piece:Piece, paddedPosition) => {
-    
+
     let validRookMoves = [];
-    
+
     getValidStraightLineMoves(0, 1, piece, paddedPosition).map(m => validRookMoves.push(m));
     getValidStraightLineMoves(0, -1, piece, paddedPosition).map(m => validRookMoves.push(m));
     getValidStraightLineMoves(1, 0, piece, paddedPosition).map(m => validRookMoves.push(m));
     getValidStraightLineMoves(-1, 0, piece, paddedPosition).map(m => validRookMoves.push(m));
-    
+
     return validRookMoves;
 }
 
 const getValidQueenMoves = (piece:Piece, paddedPosition) => {
-    
+
     let validQueenMoves = [];
-    
+
     getValidRookMoves(piece, paddedPosition).map(m => validQueenMoves.push(m));
     getValidBishopMoves(piece, paddedPosition).map(m => validQueenMoves.push(m));
-    
+
     return validQueenMoves;
 }
 
 const isKingInCheck = (paddedPosition, color) => {
-    
+
     // Find correct king in current position
     const king = paddedPosition.map(r => {
         return r.filter(p => {
@@ -221,7 +223,7 @@ const isKingInCheck = (paddedPosition, color) => {
             return false;
         })[0]
     }).filter(p => p !== undefined)[0];
-    
+
     // Make the king pretend its different piece types.
     // If it can capture a similar piece its in check.
     // Queens are both rooks and bishops in this context.
@@ -239,14 +241,14 @@ const isKingInCheck = (paddedPosition, color) => {
     }
     return getValidPawnMoves(king, paddedPosition).filter(m => m.type === 'capture')
         .filter(m => paddedPosition[m.col][m.row].pieceType === 'pawn').length > 0;
-    
+
 }
 
 const getValidMoves = (piece:Piece, position) => {
-    
+
     const paddedPosition = padPosition(position.pieces);
     let validMoves;
-    
+
     switch (piece.pieceType) {
         case 'pawn': {
             validMoves = getValidPawnMoves(piece, paddedPosition)

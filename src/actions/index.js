@@ -1,3 +1,5 @@
+// @flow
+
 export const PIECE_LIFTED = 'PIECE_LIFTED';
 export const PIECE_PLACED = 'PIECE_PLACED';
 

@@ -13,9 +13,10 @@ dist
 # flow
 flow-typed
 
-# intellij / webstorm
+# IDE specific files
 .idea
 *.iml
+.vscode
 
 # misc
 .DS_Store
