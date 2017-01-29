@@ -67,7 +67,7 @@ export default class PieceComponent extends Component {
   }
 
   render() {
-    const { key, piece } = this.props
+    const { piece } = this.props
     const { isPressed, mouse: [mouseX, mouseY] } = this.state
     const x = piece.col * 100;
     const y = piece.row * 100;
@@ -111,7 +111,7 @@ export default class PieceComponent extends Component {
       }
     }
     return (
-      <Motion key={key} style={motionStyle}>
+      <Motion style={motionStyle}>
         { ({translateX, translateY, scale}) =>
           <div
             onMouseDown={this.handleMouseDown.bind(this, [x, y])}
