@@ -1,7 +1,7 @@
 // @flow
 
-import React, {Component} from 'react'
-import {Piece, Colors} from '../../game/pieces'
+import React, { Component } from 'react'
+import { Colors, Piece } from '../../game/pieces'
 import bishopDarkUrl from './images/Chess_bdt45.svg'
 import bishopLightUrl from './images/Chess_blt45.svg'
 import kingDarkUrl from './images/Chess_kdt45.svg'
@@ -14,14 +14,31 @@ import queenDarkUrl from './images/Chess_qdt45.svg'
 import queenLightUrl from './images/Chess_qlt45.svg'
 import rookDarkUrl from './images/Chess_rdt45.svg'
 import rookLightUrl from './images/Chess_rlt45.svg'
-import './piece.css'
 import { Motion, spring } from 'react-motion'
+import './piece.css'
 
-export default class PieceComponent extends Component {
+type PieceProps = {
+  piece: Piece
+}
 
-  constructor(props) {
+type State = {
+    isPressed: boolean,
+    col: number,
+    row: number,
+    hoverCol: number,
+    hoverRow: number,
+    mouse: Array<number>,
+    delta: Array<number>
+  }
+
+export default class PieceComponent extends Component<void, PieceProps, State> {
+
+  state: State
+
+  constructor(props: PieceProps) {
     super(props)
     this.liftPiece = this.props.liftPiece
+    this.placePiece = this.props.placePiece
     this.state = {
       isPressed: false,
       col: props.piece.col,
@@ -38,9 +55,7 @@ export default class PieceComponent extends Component {
     window.addEventListener('mousemove', this.handleMouseMove.bind(this));
   }
 
-  handleMouseDown([pressX, pressY], {pageX, pageY}) {
-
-    this.liftPiece(this.props.piece)
+  handleMouseDown([pressX, pressY]: Array<number>, {pageX, pageY}: {pageX: number, pageY: number}) {
     this.setState({
       isPressed: true,
       delta: [pageX - pressX, pageY - pressY],
@@ -48,7 +63,7 @@ export default class PieceComponent extends Component {
     })
   }
 
-  handleMouseMove({pageX, pageY}) {
+  handleMouseMove({pageX, pageY}: any) {
    const { isPressed, delta: [dx, dy] } = this.state;
     if(isPressed) {
       const mouse = [pageX - dx, pageY - dy];
@@ -58,59 +73,61 @@ export default class PieceComponent extends Component {
     }
   }
 
-  handleMouseUp() {
-    this.setState({isPressed: false})
+  handleMouseUp(e) {
+    if (this.state.isPressed) {
+      this.setState({isPressed: false})
+      this.placePiece(this.props.piece, {col: this.state.hoverCol, row: this.state.hoverRow})
+    }
   }
 
   render() {
-    const { key, piece } = this.props
-    const { isPressed, hoverCol, hoverRow, mouse: [mouseX, mouseY] } = this.state
-    const color = piece.color == 1 ? 'black' : 'white'
-    const classList = `piece ${color}`
-    const text = piece.notation
-    const x = hoverCol * 100;
-    const y = hoverRow * 100;
+    const { piece } = this.props
+    const { isPressed, mouse: [mouseX, mouseY] } = this.state
+    const x = piece.col * 100;
+    const y = piece.row * 100;
     let motionStyle
     let imageUrl = pawnLightUrl
 
-    if (piece.pieceType == 'queen') {
-      imageUrl = piece.getColor() == Colors.BLACK ? queenDarkUrl : queenLightUrl
+    if (piece.pieceType === 'queen') {
+      imageUrl = piece.color === Colors.BLACK ? queenDarkUrl : queenLightUrl
     }
 
-    if (piece.pieceType == 'king') {
-      imageUrl = piece.getColor() == Colors.BLACK ? kingDarkUrl : kingLightUrl
+    if (piece.pieceType === 'king') {
+      imageUrl = piece.color === Colors.BLACK ? kingDarkUrl : kingLightUrl
     }
 
-    if (piece.pieceType == 'rook') {
-      imageUrl = piece.getColor() == Colors.BLACK ? rookDarkUrl : rookLightUrl
+    if (piece.pieceType === 'rook') {
+      imageUrl = piece.color === Colors.BLACK ? rookDarkUrl : rookLightUrl
     }
 
-    if (piece.pieceType == 'bishop') {
-      imageUrl = piece.getColor() == Colors.BLACK ? bishopDarkUrl : bishopLightUrl
+    if (piece.pieceType === 'bishop') {
+      imageUrl = piece.color === Colors.BLACK ? bishopDarkUrl : bishopLightUrl
     }
 
-    if (piece.pieceType == 'knight') {
-      imageUrl = piece.getColor() == Colors.BLACK ? knightDarkUrl : knightLightUrl
+    if (piece.pieceType === 'knight') {
+      imageUrl = piece.color === Colors.BLACK ? knightDarkUrl : knightLightUrl
     }
 
-    if (piece.pieceType == 'pawn') {
-      imageUrl = piece.getColor() == Colors.BLACK ? pawnDarkUrl : pawnLightUrl
+    if (piece.pieceType === 'pawn') {
+      imageUrl = piece.color === Colors.BLACK ? pawnDarkUrl : pawnLightUrl
     }
+
     if (isPressed) {
       motionStyle = {
-        translateX: spring(mouseX, [300, 40]),
-        translateY: spring(mouseY, [300, 40]),
-        scale: spring(1.2, [300, 40])
+        translateX: spring(mouseX, {stiffness: 300, damping:40}),
+        translateY: spring(mouseY, {stiffness: 300, damping:40}),
+        scale: spring(1.2, {stiffness: 300, damping:40})
       }
     } else {
       motionStyle = {
-        translateX: spring(x, [300, 40]),
-        translateY: spring(y, [300, 40]),
-        scale: spring(1, [300, 40])
+        translateX: spring(x, {stiffness: 300, damping:40}),
+        translateY: spring(y, {stiffness: 300, damping:40}),
+        scale: spring(1, {stiffness: 300, damping:40})
       }
     }
+
     return (
-      <Motion key={key} style={motionStyle}>
+      <Motion style={motionStyle}>
         { ({translateX, translateY, scale}) =>
           <div
             onMouseDown={this.handleMouseDown.bind(this, [x, y])}
@@ -118,7 +135,7 @@ export default class PieceComponent extends Component {
             style={{
               WebkitTransform: `translate3d(${translateX}px, ${translateY}px, 0) scale(${scale})`,
               transform: `translate3d(${translateX}px, ${translateY}px, 0) scale(${scale})`,
-            }}><img draggable="false" className="piece-image" src={imageUrl}/></div>
+            }}><img draggable="false" className="piece-image" src={imageUrl} alt="Piece"/></div>
         }
       </Motion>
     )

@@ -1,7 +1,5 @@
 // @flow
 
-import Piece from '../pieces/piece'
-
 export default class Square {
   row: number
   col: number
@@ -13,9 +11,7 @@ export default class Square {
     this.color = color
   }
 
-
   getRow() { return this.row }
   getCol() { return this.col }
-
   getColor() { return this.color }
 }

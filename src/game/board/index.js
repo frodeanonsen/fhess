@@ -1,6 +1,6 @@
 // @flow
 
-import { King, Queen, Rook, Bishop, Knight, Pawn, Colors } from '../pieces'
+import { Colors } from '../pieces'
 import Square from './square'
 
 const colPositions = { a: 0, b: 1, c: 2, d: 3, e: 4, f: 5, g: 6, h: 7 }
